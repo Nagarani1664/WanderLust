@@ -43,9 +43,9 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 const store = MongoStore.create({
     mongoUrl: atlaurl,
-    crypto:{
+    
     secret : process.env.SECRET,
-    },
+
     touchAfter:24*3600,
 });
 store.on('error',(err)=>{
@@ -54,7 +54,7 @@ store.on('error',(err)=>{
 
 const sessionOptions = {
     store,
-    secret : process.env.SECRET,
+    secret :process.env.SECRET ,
     resave: false,
     saveUninitialized: true,
     cookie : {
