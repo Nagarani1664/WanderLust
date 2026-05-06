@@ -82,6 +82,10 @@ module.exports.newlisting = async (req, res) => {
   // console.log(coords);
 
   // image
+  if(!req.file){
+   req.flash("error","Please upload an image");
+   return res.redirect("/listings/new");
+}
   let url = req.file.path;
   let filename = req.file.filename;
   newlisting.image = { url, filename };
