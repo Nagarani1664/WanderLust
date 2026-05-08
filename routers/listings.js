@@ -17,7 +17,6 @@ const validateListing = (req, res, next) => {
 
     console.log(req.body);
     console.log(result);
-
     if(result.error){
         return res.send(result.error.details[0].message);
     }
@@ -65,7 +64,7 @@ router.get("/:id/edit",isLoggedIn,wrapAsync(listingController.edit));
 router
 .route("/")
 .get(wrapAsync(listingController.index))
-.post(isLoggedIn,validateListing,upload.single("listing[image]"),wrapAsync (listingController.newlisting));
+.post(isLoggedIn,upload.single("listing[image]"),validateListing,wrapAsync (listingController.newlisting));
 // .post(upload.single("listing[image]"),(req,res)=>{
 // 
     // res.send(req.file);
