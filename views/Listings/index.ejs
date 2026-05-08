@@ -91,7 +91,7 @@
     <div class="col">
       <a href="/listings/<%= listing._id %>" class="listing-link">
         <div class="listing-card">
-          <pre><%= JSON.stringify(listing,null,2) %></pre>
+          
                    <% if(listing.image && listing.image.url){ %>
 
                     <img src="<%= listing.image.url %>" 
