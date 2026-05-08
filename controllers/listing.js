@@ -23,7 +23,7 @@ module.exports.index=async (req,res)=>{
 }
 
 module.exports.new=async(req,res)=>{
-   console.log(req.user);
+   
     res.render("Listings/new.ejs");
 }
 module.exports.show=( async (req,res)=>{
@@ -36,7 +36,7 @@ module.exports.show=( async (req,res)=>{
     }
   })
   .populate("owner");
- console.log(listing);
+
  if(!listing){
     req.flash("error","Listing you requested does not exit" );
     return res.redirect("/listings"); //vvry imp
@@ -64,7 +64,6 @@ module.exports.newlisting = async (req, res) => {
 
       const data = await response.json();
 
-      console.log(data);
 
       if (!data.length) {
         throw new Error("Invalid location");
@@ -79,8 +78,7 @@ module.exports.newlisting = async (req, res) => {
       type: "Point",
       coordinates: coords
     };
-    console.log("BODY:", req.body);
-console.log("FILE:", req.file); 
+ 
     if (!req.file) {
       req.flash("error", "Image upload failed");
       return res.redirect("/listings/new");

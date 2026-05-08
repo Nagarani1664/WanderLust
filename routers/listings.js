@@ -11,17 +11,15 @@ const multer  = require('multer')
 const {storage} = require("../ckoudconfiguration.js");
 const upload = multer({storage})
 
-const validateListing = (req, res, next) => {
-
-    let result = listingSchema.validate(req.body);
-
-    console.log(req.body);
-    console.log(result);
-    if(result.error){
-        return res.send(result.error.details[0].message);
+const validateListing=(req,res,next)=>{
+    let {error}=listingSchema.validate(req.body);
+    if(error){
+        let errMsg=error.details.map((el)=>el.message).join(",");
+        throw new ExpressError(400,errMsg);
     }
-
-    next();
+    else {
+        next();
+    }
 }
 router.get("/new",isLoggedIn,listingController.new);
 
