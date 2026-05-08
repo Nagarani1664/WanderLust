@@ -1,23 +1,23 @@
-const cloudinary=require("cloudinary").v2;
-const {CloudinaryStorage}=require("multer-storage-cloudinary");
+
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
 cloudinary.config({
-    cloud_name: process.env.cloud_name,
-    api_key:process.env.cloud_api_key,
-    api_secret:process.env.cloud_api_secret
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.CLOUD_API_KEY,
+  api_secret: process.env.CLOUD_API_SECRET,
+  
 });
 
-//define storage
-
-const storage=new CloudinaryStorage({
-    cloudinary: cloudinary,
-    params:{
-        folder : "wanderLust_Dev",
-        allowedFormats:["png","jpeg","jpg"]
-    },
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => ({
+    folder: "wanderLust_Dev",
+    allowed_formats: ["png", "jpg", "jpeg"],
+  }),
 });
 
-module.exports={
-    cloudinary,
-    storage
-}
+module.exports = {
+  cloudinary,
+  storage,
+};

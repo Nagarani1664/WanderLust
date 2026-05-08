@@ -85,12 +85,13 @@
 </div>
 </div>
     </div>
-  <!-- <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 margin-top-3">
-  //<% for(let listing of allListings){ %>
+  <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 margin-top-3">
+  <% for(let listing of allListings){ %>
 
     <div class="col">
       <a href="/listings/<%= listing._id %>" class="listing-link">
         <div class="listing-card">
+          <pre><%= JSON.stringify(listing,null,2) %></pre>
                    <% if(listing.image && listing.image.url){ %>
 
                     <img src="<%= listing.image.url %>" 
@@ -101,22 +102,23 @@
                
                <div class="card-body">
                  <p class="card-text">
-                 //  <b><%= listing.title %></b><br>
-                   //⭐ <%= listing.avgrating ? listing.avgrating.toFixed(1) : "New" %>
+                   <b><%= listing.title %></b><br>
+                   ⭐ <%= typeof listing.avgrating === "number" ? listing.avgrating.toFixed(1) : "New" %>
                    <br>
-              &#8377;
-             // <%= listing.price.toLocaleString("en-IN") %>/night
+                   &#8377;
+                   <%= listing.price ? listing.price.toLocaleString("en-IN") : "No Price" %>/night
+              
               <i class="tax-info">&nbsp; &nbsp; +18%GST</i>
             </p>
           </div>
 
-        </div>
+        </div> 
       </a>
     </div>
 
- // <% } %>
-</div> -->
-<h1>TEST PAGE WORKING</h1>
+  <% } %>
+</div>
+
 
 <script>
 let taxswitch = document.getElementById("switchCheckDefault");

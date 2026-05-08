@@ -79,7 +79,8 @@ module.exports.newlisting = async (req, res) => {
       type: "Point",
       coordinates: coords
     };
-
+    console.log("BODY:", req.body);
+console.log("FILE:", req.file); 
     if (!req.file) {
       req.flash("error", "Image upload failed");
       return res.redirect("/listings/new");

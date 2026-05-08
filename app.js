@@ -93,6 +93,12 @@ passport.deserializeUser(User.deserializeUser());
 // app.get("/", (req, res) => {
 //     res.redirect("/listings");
 // });
+app.get("/cloud-test", (req,res)=>{
+   console.log(process.env.CLOUD_NAME);
+   console.log(process.env.CLOUD_API_KEY);
+   console.log(process.env.CLOUD_API_SECRET);
+   res.send("check terminal");
+});
 app.use((req,res,next)=>{
     res.locals.success=req.flash("success");
     res.locals.error=req.flash("error");
