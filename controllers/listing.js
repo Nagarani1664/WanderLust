@@ -46,61 +46,66 @@ module.exports.show=( async (req,res)=>{
 })
 module.exports.newlisting = async (req, res) => {
 
-  // create listing first
-  const newlisting = new Listing(req.body.listing);
-  newlisting.owner = req.user._id;
+  try {
 
-  // ✅ geocoding function
-  async function getCoords(place) {
-    const res = await fetch(
-      `https://nominatim.openstreetmap.org/search?format=json&q=${place}`,
-      {
-        headers: {
-          "User-Agent": "wanderlust-app"
+    const newlisting = new Listing(req.body.listing);
+    newlisting.owner = req.user._id;
+
+    async function getCoords(place) {
+
+      const response = await fetch(
+        `https://nominatim.openstreetmap.org/search?format=json&q=${place}`,
+        {
+          headers: {
+            "User-Agent": "wanderlust-app"
+          }
         }
+      );
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (!data.length) {
+        throw new Error("Invalid location");
       }
-    );
 
-    const data = await res.json();
-
-    if (!data.length) {
-      throw new Error("Invalid location");
+      return [data[0].lon, data[0].lat];
     }
 
-    return [data[0].lon, data[0].lat]; // [lng, lat]
+    const coords = await getCoords(req.body.listing.location);
+
+    newlisting.geometry = {
+      type: "Point",
+      coordinates: coords
+    };
+
+    if (!req.file) {
+      req.flash("error", "Image upload failed");
+      return res.redirect("/listings/new");
+    }
+
+    let url = req.file.path;
+    let filename = req.file.filename;
+
+    newlisting.image = { url, filename };
+
+    await newlisting.save();
+
+    req.flash("success", "New listing added");
+
+    res.redirect("/listings");
+
+  } catch (err) {
+
+    console.log(err);
+
+    req.flash("error", err.message);
+
+    res.redirect("/listings");
+
   }
-
-  // ✅ call function HERE
-  const coords = await getCoords(req.body.listing.location);
-
-  // ✅ save geometry (GeoJSON)
-  newlisting.geometry = {
-    type: "Point",
-    coordinates: coords
-  };
-
-  // console.log(coords);
-
-  // image
-console.log(req.file);
-
-if(!req.file){
-   req.flash("error","Image upload failed");
-   return res.redirect("/listings/new");
-}
-
-
-  let url = req.file.path;
-  let filename = req.file.filename;
-  newlisting.image = { url, filename };
-  console.log(newlisting);
-
-  await newlisting.save();
-
-  req.flash("success", "New listing added");
-  res.redirect("/listings");
 };
-
 module.exports.edit=async (req,res)=>{
  let {id} =req.params;
  const listing=await Listing.findById(id);
