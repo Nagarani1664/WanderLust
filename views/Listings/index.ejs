@@ -92,9 +92,14 @@
       <a href="/listings/<%= listing._id %>" class="listing-link">
         <div class="listing-card">
 
-          <img src="<%= listing.image.url %>" 
-               class="card-img-top" 
-               style="height: 20rem;" />
+        
+                   <% if(listing.image && listing.image.url){ %>
+
+                    <img src="<%= listing.image.url %>" 
+                        class="card-img-top" 
+                        style="height: 20rem;" />
+
+                    <% } %>
                
                <div class="card-body">
                  <p class="card-text">
